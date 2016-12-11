@@ -1,3 +1,4 @@
+package Sufix;
 
 public class Par<A, B> {
 	

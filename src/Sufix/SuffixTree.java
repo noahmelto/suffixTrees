@@ -1,3 +1,4 @@
+package Sufix;
 
 import java.util.Collection;
 
@@ -19,23 +20,25 @@ public class SuffixTree {
     
     
     
-
+/*
     //Para buscar la palabra (secuencia de caracteres)
     public Collection<Integer> buscar(String w) {
         return buscaRetornando(w, -1);
     }
-
+*/
     //Busca y devuelve los resultados
     
-    public Collection<Integer> buscaRetornando(String w, int res) {
+    public Collection<Integer> buscar(String w) {
         Nodo temp = buscarNodo(w);
         if (temp == null) {
             return Collections.EMPTY_LIST;
         }
-        return temp.getInfo(res);
+        return temp.getInfo();
     }
 
     //Cuenta la cant de resultados
+    //
+    /*
     public ResultadosStruct buscaContando(String w, int t) {
     	
     	
@@ -45,7 +48,7 @@ public class SuffixTree {
         }
 
         return new ResultadosStruct(temp.getInfo(t), temp.contarResultados());
-    }
+    }*/
 
     //para devolver el nodo que contiene la palabra si es que existe
     
@@ -60,7 +63,7 @@ public class SuffixTree {
             itL = itN.getLink(ch);
             
             //me daba problemas con la verificacion al reves por eso pongo null primero
-            if (null == itL) {
+            if ( itL == null) {
                 // si entra aqui es que no hay ninguna empezando cone ste caracter
             	System.out.println("No hay ninguna empezando con este caracter");
             	
@@ -114,7 +117,7 @@ public class SuffixTree {
             
             texto += valorInicial.charAt(i);
             // use intern to make sure the resulting string is in the pool.
-            texto = texto.intern();
+            //texto = texto.intern();
 
             // line 7: update the tree with the new transitions due to this new char
             Par<Nodo, String> parAct = actualizarSufijos(n, texto, valorInicial.substring(i), index);

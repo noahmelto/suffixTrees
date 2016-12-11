@@ -1,22 +1,14 @@
-import java.util.Collection;
-import java.util.Set;
-import java.util.Map;
+package Sufix;
 
-import java.util.HashSet;
-
-import java.util.Arrays;
-
+import java.util.*;
 
 
 public class Nodo {
 
-	private int[] info;
+	private ArrayList<Integer> info;
    
     private int ultimo = 0;
-   
-    private static final int INIT = 0;
-   
-    private static final int INC = 1;
+
     
     
     
@@ -32,16 +24,12 @@ public class Nodo {
     Nodo() {
         links = new MapCharAndLink();
         sufijo = null;
-        info = new int[INIT];
+        info = new ArrayList<>();
     }
 
     
-    public  Collection<Integer> getInfo() {
-        return getInfo(-1);
-    }
-
-    
-    public Collection<Integer> getInfo(int cantElementos) {
+    public Collection<Integer> getInfo() {
+        int cantElementos = -1;
         Set<Integer> colector = new HashSet<Integer>();
         
         
@@ -53,9 +41,6 @@ public class Nodo {
               return colector;
             }
         }
-        
-        
-        
         // falta hacerlo para los hijos
         
         for (Link l : links.values()) {
@@ -82,9 +67,9 @@ public class Nodo {
 
         while (menor <= mayor) {
         	
-            int medio = (menor + mayor) >>> 1;
+            int medio = (menor + mayor)/2;
              
-            int valorMedio = info[medio];
+            int valorMedio = info.get(medio);
 
             if (valorMedio < index){   menor = valorMedio + 1;}
             else if (valorMedio > index)  { mayor = medio - 1;}
@@ -98,17 +83,18 @@ public class Nodo {
 
    ///agrega la referencia a un indice
     public void addIndRef(int index) {
-    	if (java.util.Arrays.binarySearch(info, 0, ultimo, index)>= 0) return;
-        
+        for(int i = 0; i<info.size();i++){
+            if(info.get(i)==index) return;
+        }
 
-        addIndex(index);
+        info.add(index);
 
         // actualiza agregando en todos los sufijos
         
         
          Nodo it = this.sufijo;
         while (it != null) {
-            if (java.util.Arrays.binarySearch(it.info, 0, ultimo, index)>=0) {
+            if (it.contains(index)) {
                 break;
             }
             
@@ -129,14 +115,14 @@ public class Nodo {
     }
 
     private Set<Integer> contarResultadosAux() {
-    	
+
         Set<Integer> collect = new HashSet<Integer>();
         
         for (int num : info) {
             collect.add(num);
         }
-        
-        
+
+
          for (Link l : links.values()) {
             for (int num : l.getDestino().contarResultadosAux()) {
                 collect.add(num);
@@ -183,20 +169,4 @@ public class Nodo {
         	this.sufijo = suf;
     	}
 
-    
-    
-    
-    private void addIndex(int index) {
-        if (ultimo == info.length) {
-        	
-        	//Pablo analiza si es mejor poner un array list aqui para quitarnos la copiadera 
-            int[] copy = new int[info.length + INC];
-            
-            System.arraycopy(info, 0, copy, 0, info.length);
-            info = copy;
-            
-            
-        }
-        info[ultimo++] = index;
-    }
 }
