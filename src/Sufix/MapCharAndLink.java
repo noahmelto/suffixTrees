@@ -11,7 +11,6 @@ public class MapCharAndLink implements Map<Character, Link>{
 	private byte[] chars;
     private Link[] values;
     
-    private static final int BSEARCH_LIMITE = 6;
 
     @Override
     public Link put(Character character, Link l) {
@@ -42,9 +41,9 @@ public class MapCharAndLink implements Map<Character, Link>{
             chars[tamanho] = (byte) c;
             values[tamanho] = l;
             tamanho++;
-            if (tamanho > BSEARCH_LIMITE) {
-                sortArrays();
-            }
+
+            sortArrays();
+
         } else {
             pred = values[index];
             values[index] = l;
@@ -76,9 +75,6 @@ public class MapCharAndLink implements Map<Character, Link>{
         
         
         //Para optimizar los tiempos lo podemos conversar luego
-        if (chars.length > BSEARCH_LIMITE) {
-            return java.util.Arrays.binarySearch(chars, (byte) c);
-        }
         
         
         

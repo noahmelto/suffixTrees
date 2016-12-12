@@ -11,18 +11,12 @@ public class Link {
     }
 
     
-    
     public void setValue(String v) {
         this.value = v;
     }
 
     public Nodo getDestino() {
         return destino;
-    }
-
-    
-    public void setDest(Nodo dest) {
-        this.destino = dest;
     }
 
     public Link(String v, Nodo dest) {

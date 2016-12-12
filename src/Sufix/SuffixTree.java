@@ -281,7 +281,6 @@ public class SuffixTree {
         
         char nChar = segmento.charAt(segmento.length() - 1);
 
-     
         Nodo raizOriginal = raiz;
 
         checkDiv(n, tempStr.substring(0, tempStr.length() - 1), nChar, restante, ind);
