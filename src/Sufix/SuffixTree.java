@@ -1,5 +1,6 @@
 package Sufix;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -7,7 +8,12 @@ import java.util.Collections;
 
 
 public class SuffixTree {
-	
+
+    Nodo nodoGlobal;
+    String stringGlobal;
+    Boolean booleanGlobal;
+    ArrayList<String> Palabras = new ArrayList<>();
+
 	private final Nodo raiz = new Nodo();
 	
 	//Indice del ultimo anhadido
@@ -81,16 +87,12 @@ public class SuffixTree {
                     return itL.getDestino();
                     
                 } else {
-                	
-                	
                     // seguimos para el proximo
                     itN = itL.getDestino();
                     i += largo - 1;
                 	}
             }
         	}
-
-        
         return null;
     }
 
@@ -124,9 +126,13 @@ public class SuffixTree {
             
             // line 8: make sure the active pair is canonical
             parAct = deepNValue(parAct.getFirst(), parAct.getSecond());
-            
-            n = parAct.getFirst();
-            texto = parAct.getSecond();
+
+            texto = stringGlobal;
+            n = nodoGlobal;
+
+
+            //n = parAct.getFirst();
+            //texto = parAct.getSecond();
         }
 
         // comprueba si es necesario adicionar el link y lo adiciona
@@ -141,8 +147,9 @@ public class SuffixTree {
     private Par<Boolean, Nodo> checkDiv(final Nodo in, final String segmento, final char ch, final String valorInicial, final int ind) {
         // descend the tree as far as possible
         Par<Nodo, String> resultado = deepNValue(in, segmento);
-        Nodo n = resultado.getFirst();
-        
+
+        Nodo n = nodoGlobal;
+
         String str = resultado.getSecond();
 
         if (!"".equals(str)) {
@@ -153,6 +160,8 @@ public class SuffixTree {
             String val = g.getValue();
             
             if (val.length() > str.length() && val.charAt(str.length()) == ch) {
+                booleanGlobal = true;
+                //nodoGlobal = n;
                 		return new Par<Boolean, Nodo>(true, n);
             } else {
                 // si entra aqui es que se necesita dividir el link
@@ -169,7 +178,8 @@ public class SuffixTree {
                 // Creando el link de n con r
                 r.addLink(newVal.charAt(0), g);
                 n.addLink(str.charAt(0), newL);
-
+                nodoGlobal = r;
+                booleanGlobal = false;
                 return new Par<Boolean, Nodo>(false, r);
             }
 
@@ -179,7 +189,8 @@ public class SuffixTree {
             if (null == l) {
                 // Si entra aqui es que no hay transicion t
             	System.out.println("No hay transicion t");
-            	
+            	booleanGlobal = false;
+                //nodoGlobal = n;
                 return new Par<Boolean, Nodo>(false, n);
                 
                 
@@ -187,9 +198,13 @@ public class SuffixTree {
                 if (valorInicial.equals(l.getValue())) {
                     // actualizacion
                     l.getDestino().addIndRef(ind);
+                  //  nodoGlobal = n;
+                    booleanGlobal = true;
                     return new Par<Boolean, Nodo>(true, n);
                     
                 } else if (valorInicial.startsWith(l.getValue())) {
+                    //nodoGlobal = n;
+                    booleanGlobal = true;
                     return new Par<Boolean, Nodo>(true, n);
                     
                 	} else if (l.getValue().startsWith(valorInicial)) {
@@ -206,14 +221,17 @@ public class SuffixTree {
                 		nNodo.addLink(l.getValue().charAt(0), l);
 
                 		n.addLink(ch, newL);
-
-                    return new Par<Boolean, Nodo>(false, n);
+                    //nodoGlobal = n;
+                    booleanGlobal = false;
+                        return new Par<Boolean, Nodo>(false, n);
                     
                 } else {
                 	
                 	
                     // deben tener alguna substring igual
                 	System.out.println("subtring en comun");
+                    //nodoGlobal = n;
+                    booleanGlobal = true;
                     return new Par<Boolean, Nodo>(true, n);
                     
                     
@@ -227,6 +245,8 @@ public class SuffixTree {
     private Par<Nodo, String> deepNValue(final Nodo n, final String walkingStr) {
 
         if ("".equals(walkingStr)) {
+            nodoGlobal = n;
+            stringGlobal = walkingStr;
             return new Par<Nodo, String>(n, walkingStr);
             
         } else {
@@ -245,7 +265,8 @@ public class SuffixTree {
                 	}
             }
 
-            
+            nodoGlobal = itN;
+            stringGlobal = str;
             	return new Par<Nodo, String>(itN, str);
         }
     }
@@ -264,11 +285,11 @@ public class SuffixTree {
         Nodo raizOriginal = raiz;
 
         Par<Boolean, Nodo> resultado = checkDiv(n, tempStr.substring(0, tempStr.length() - 1), nChar, restante, ind);
-        
 
-        Nodo r = resultado.getSecond();
+
+        Nodo r = nodoGlobal;
         
-        boolean meta = resultado.getFirst();
+        boolean meta = booleanGlobal;
 
         Nodo nhoja;
        
@@ -309,17 +330,17 @@ public class SuffixTree {
                 tempStr = tempStr.substring(1);
             } else {
                 Par<Nodo, String> canret = deepNValue(n.getSuffix(), safeCutLastChar(tempStr));
-                n = canret.getFirst();
+                n = nodoGlobal;
                 
                 
                 // con intern para asegurarnos que tempstr es una referencia de string pool
-                tempStr = (canret.getSecond() + tempStr.charAt(tempStr.length() - 1)).intern();
+                tempStr = (stringGlobal + tempStr.charAt(tempStr.length() - 1)).intern();
             }
 
             
             resultado = checkDiv(n, safeCutLastChar(tempStr), nChar, restante, ind);
-            r = resultado.getSecond();
-            meta = resultado.getFirst();
+            r = nodoGlobal;
+            meta = booleanGlobal;
 
         }
 
@@ -331,7 +352,8 @@ public class SuffixTree {
         }
         
         raizOriginal = raiz;
-
+        nodoGlobal = n;
+        stringGlobal = tempStr;
         return new Par<Nodo, String>(n, tempStr);
     }
 
