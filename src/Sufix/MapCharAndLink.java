@@ -10,19 +10,17 @@ public class MapCharAndLink implements Map<Character, Link>{
 	
 	private byte[] chars;
     private Link[] values;
-    
+
 
     @Override
     public Link put(Character character, Link l) {
         char c = character.charValue();
-        if (c != (char) (byte) c) {
-            throw new IllegalArgumentException("Caracter  no valido " + c );
-        }
         
         if (chars == null) {
             chars = new byte[0];
             values = new Link[0];
         }
+
         int index = buscar(c);
         Link pred = null;
 
@@ -50,7 +48,7 @@ public class MapCharAndLink implements Map<Character, Link>{
         }
         return pred;
     }
-    
+
    @Override
     public Link get(Object o) {
         return get(((Character) o).charValue());  
@@ -58,9 +56,6 @@ public class MapCharAndLink implements Map<Character, Link>{
     }
 
     public Link get(char c) {
-        if (c != (char) (byte) c) {
-            throw new IllegalArgumentException("Caracter  no valido " + c);
-        }
         
         int index = buscar(c);
         if (index < 0) {
@@ -72,12 +67,8 @@ public class MapCharAndLink implements Map<Character, Link>{
     private int buscar(char c) {
         if (chars == null)
             return -1;
-        
-        
+
         //Para optimizar los tiempos lo podemos conversar luego
-        
-        
-        
 
         for (int i = 0; i < chars.length; i++) {
             if (c == chars[i]) {
@@ -111,49 +102,49 @@ public class MapCharAndLink implements Map<Character, Link>{
          }
       }
     }
-    
+
     @Override
     public boolean isEmpty() {
         return  (chars == null || chars.length == 0);
     }
-    
+
     @Override
     public int size() {
         return chars == null ? 0 : chars.length;
     }
-    
-    
+
+
     //Esto es porque me daba problemas si no implementaba todos los metodos abstractos
     @Override
     public Set<Map.Entry<Character, Link>> entrySet() {
         throw new UnsupportedOperationException("No usado aqui");
     }
-    
+
     @Override
     public Set<Character> keySet() {
         throw new UnsupportedOperationException("No usado aqui");
     }
-    
+
     @Override
     public void clear() {
         throw new UnsupportedOperationException("No usado aqui");
     }
-    
+
     @Override
     public void putAll(Map<? extends Character, ? extends Link> m) {
         throw new UnsupportedOperationException("No usado aqui");
     }
-    
+
     @Override
     public Link remove(Object key) {
         throw new UnsupportedOperationException("No usado aqui");
     }
-    
+
     @Override
     public boolean containsKey(Object key) {
         throw new UnsupportedOperationException("No usado aqui");
     }
-    
+
     @Override
     public boolean containsValue(Object key) {
         throw new UnsupportedOperationException("No usado aqui");
