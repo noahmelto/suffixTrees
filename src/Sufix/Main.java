@@ -63,6 +63,15 @@ public class Main {
 			}
 			if(strResult[i]!= null){
 				//strResult[i]= Utils.normalize(strResult[i]);
+				StringBuilder out = new StringBuilder();
+				String l = strResult[i].toLowerCase();
+				for (int j = 0; j < l.length(); ++j) {
+					char c = l.charAt(j);
+					if (c >= 'a' && c <= 'z' || c >= '0' && c <= '9') {
+						out.append(c);
+					}
+				}
+				strResult[i] = out.toString();
 				//str1.set(i, Utils.normalize(str1.get(i)));
 				countChar+= strResult[i].length();
 				xMas.addIndex(strResult[i], i);

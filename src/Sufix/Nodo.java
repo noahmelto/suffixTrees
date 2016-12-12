@@ -9,13 +9,8 @@ public class Nodo {
    
     private int ultimo = 0;
 
-    
-    
-    
-    private final Map<Character, Link> links;
-    
-    
-    
+    private Map<Character, Link> links;
+
     private Nodo sufijo;
     
     private int count = -1;
@@ -91,7 +86,6 @@ public class Nodo {
 
         // actualiza agregando en todos los sufijos
         
-        
          Nodo it = this.sufijo;
         while (it != null) {
             if (it.contains(index)) {
@@ -103,9 +97,6 @@ public class Nodo {
         }
 
     }
-
-    
-    
 
     ///Cantidad de resultados en el nodo y sus hijos
     
